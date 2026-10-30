@@ -3,11 +3,15 @@
 import './Navbar.css';
 
 // ⭐ 1. Load Supabase here
-
+import { supabase } from './supabase';
 export default function Navbar() {
 
   // ⭐ 4. Logout function here
-  const handleLogout = async () => {
+ const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Logout error:', error.message);
+    }
   };
 
   return (
