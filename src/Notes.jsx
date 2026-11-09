@@ -16,7 +16,7 @@ export default function Notes() {
   const [editingContent, setEditingContent] = useState('');
   const [toast, setToast] = useState(null);
 
-  
+
  const showError = (message) => {
     setToast(message);
     setTimeout(() => setToast(null), 3000);
