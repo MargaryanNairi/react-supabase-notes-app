@@ -5,22 +5,6 @@ import { Edit2, Trash2, Save, X, Plus } from 'lucide-react';
 import Navbar from './Navbar';
 import './Notes.css';
 
-import { useEffect } from 'react';
-
-
-
-/*//#region  reload notes every 2 seconds
-useEffect(() => {
-  const interval = setInterval(async () => {
-    const { data, error } = await supabase.from('notes').select('*');
-    if (!error) {
-      setNotes(data);
-    }
-  }, 2000);
-
-  return () => clearInterval(interval);
-}, []);
-//#endregion */
 
 
 // ⭐ 1. Load Supabase here
