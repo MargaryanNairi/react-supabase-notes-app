@@ -15,7 +15,7 @@ export default function Auth() {
       redirectTo: import.meta.env.VITE_REDIRECT_URL
     },
   });
-  console.log(import.meta.env.VITE_REDIRECT_URL);
+  
   if (error) alert(error.message);
   };
 
