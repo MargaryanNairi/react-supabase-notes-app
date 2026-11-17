@@ -5,11 +5,10 @@ import { Edit2, Trash2, Save, X, Plus } from 'lucide-react';
 import Navbar from './Navbar';
 import './Notes.css';
 
-
+import { useEffect, useState } from 'react';
+import { supabase } from './supabase'
 
 // ⭐ 1. Load Supabase here
-
-import { supabase } from './supabase'
 
 export default function Notes() {
   const [notes, setNotes] = useState([]);
@@ -24,23 +23,33 @@ export default function Notes() {
     setTimeout(() => setToast(null), 3000);
   };
 
+
 // ⭐ 5. Fetch Notes
-   const fetchNotes = async () => {
-     const { data, error } = await supabase
-       .from('Notes')
-       .select('*')
-       .order('created_at', { ascending: false });
+useEffect(() => {
+  const fetchNotes = async () => {
+    const { data, error } = await supabase
+      .from('Notes')
+      .select('*')
+      .order('created_at', { ascending: false });
 
-     console.log('fetch result:', data, error);
+    console.log('fetch result:', data, error);
 
-     if (error) {
-       console.error(error.message);
-       showError(error.message);
-       return;
-     }
+    if (error) {
+      console.error(error.message);
+      showError(error.message);
+      return;
+    }
 
-     setNotes(data || []);
-   };
+    setNotes(data || []);
+  };
+
+  fetchNotes();
+
+  const interval = setInterval(fetchNotes, 2000);
+
+  return () => clearInterval(interval);
+}, []);
+
 
   // ⭐ 6. Create Note
 const addNote = async () => {
