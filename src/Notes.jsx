@@ -41,7 +41,7 @@ useEffect(() => {
   fetchNotes();
   const interval = setInterval(fetchNotes, 3000);
   return () => clearInterval(interval);
-}, []);
+}, [notes]);
 
 
   // ⭐ 6. Create Note
