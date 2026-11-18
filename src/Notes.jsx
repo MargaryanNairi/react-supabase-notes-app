@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Edit2, Trash2, Save, X, Plus } from 'lucide-react';
 import Navbar from './Navbar';
 import './Notes.css';
-import { supabase } from './sugpabase'
+import { supabase } from './supabase'
 
 // ⭐ 1. Load Supabase here
 
