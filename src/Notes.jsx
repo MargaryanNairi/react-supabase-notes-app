@@ -48,7 +48,6 @@ useEffect(() => {
 const addNote = async () => {
   if (!newNote.trim()) return;
 
-  // Fetch User
   const {
     data: { user },
     error: userError

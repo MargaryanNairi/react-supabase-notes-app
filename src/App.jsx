@@ -1,5 +1,3 @@
-// App.jsx
-
 import { useEffect, useState } from 'react';
 import Auth from './Auth';
 import Notes from './Notes';
@@ -9,7 +7,6 @@ import Tasks from './Tasks';
 import { supabase } from './supabase';
 
 function App() {
-  // Sessions should be null by default;
   const [session, setSession] = useState(false);
   const [hash, setHash] = useState(window.location.hash);
 

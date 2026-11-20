@@ -1,5 +1,3 @@
-// Navbar.jsx
-
 import { useEffect, useState } from 'react';
 import { StickyNote, ListChecks } from 'lucide-react';
 import './Navbar.css';
