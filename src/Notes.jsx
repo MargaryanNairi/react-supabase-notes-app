@@ -22,8 +22,11 @@ export default function Notes() {
     setTimeout(() => setToast(null), 3000);
   };
 
-  useEffect(async () => {
-    const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY)
+  useEffect(async () => {    
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
+    
+    const supabase = createClient(supabaseUrl, supabaseKey);
     const { data, error } = await supabase.functions.invoke('notes', {
       body: { name: 'Functions' },
     })
