@@ -9,7 +9,7 @@ import { createClient } from '@supabase/supabase-js'
 
 // ⭐ 1. Load Supabase here
 
-export default async function Notes() {
+export default function Notes() {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState('');
   const [editingId, setEditingId] = useState(null);
@@ -22,34 +22,35 @@ export default async function Notes() {
     setTimeout(() => setToast(null), 3000);
   };
 
-/*
-  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY)
-  const { data, error } = await supabase.functions.invoke('notes', {
-    body: { name: 'Functions' },
-  })
-  console.log('Function response:', data, error);
-*/
-  // ⭐ 5. Fetch Notes
-  const fetchNotes = async () => {
-    const { data, error } = await supabase
-      .from('Notes')
-      .select('*')
-      .order('created_at', { ascending: false });
+  useEffect(async () => {
+    const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY)
+    const { data, error } = await supabase.functions.invoke('notes', {
+      body: { name: 'Functions' },
+    })
+    console.log('Function response:', data, error);
+  }, []);
 
-    if (error) {
-      console.error(error.message);
-      return;
-    }
-
-    setNotes(data || []);
-  };
-
-  useEffect(() => {
-    fetchNotes();
-    const interval = setInterval(fetchNotes, 3000);
-    return () => clearInterval(interval);
-  }, [notes]);
-
+  /*  // ⭐ 5. Fetch Notes
+    const fetchNotes = async () => {
+      const { data, error } = await supabase
+        .from('Notes')
+        .select('*')
+        .order('created_at', { ascending: false });
+  
+      if (error) {
+        console.error(error.message);
+        return;
+      }
+  
+      setNotes(data || []);
+    };
+  
+    useEffect(() => {
+      fetchNotes();
+      const interval = setInterval(fetchNotes, 3000);
+      return () => clearInterval(interval);
+    }, [notes]);
+  */
 
   // ⭐ 6. Create Note
   const addNote = async () => {
