@@ -22,13 +22,13 @@ export default async function Notes() {
     setTimeout(() => setToast(null), 3000);
   };
 
-
+/*
   const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY)
   const { data, error } = await supabase.functions.invoke('notes', {
     body: { name: 'Functions' },
   })
   console.log('Function response:', data, error);
-
+*/
 /*  // ⭐ 5. Fetch Notes
   const fetchNotes = async () => {
     const { data, error } = await supabase
