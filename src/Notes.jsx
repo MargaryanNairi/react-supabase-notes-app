@@ -29,7 +29,7 @@ export default async function Notes() {
   })
   console.log('Function response:', data, error);
 */
-/*  // ⭐ 5. Fetch Notes
+  // ⭐ 5. Fetch Notes
   const fetchNotes = async () => {
     const { data, error } = await supabase
       .from('Notes')
@@ -49,7 +49,7 @@ export default async function Notes() {
     const interval = setInterval(fetchNotes, 3000);
     return () => clearInterval(interval);
   }, [notes]);
-*/
+
 
   // ⭐ 6. Create Note
   const addNote = async () => {
