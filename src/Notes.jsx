@@ -5,10 +5,11 @@ import { Edit2, Trash2, Save, X, Plus } from 'lucide-react';
 import Navbar from './Navbar';
 import './Notes.css';
 import { supabase } from './supabase'
+import { createClient } from '@supabase/supabase-js'
 
 // ⭐ 1. Load Supabase here
 
-export default function Notes() {
+export default async function Notes() {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState('');
   const [editingId, setEditingId] = useState(null);
@@ -22,99 +23,105 @@ export default function Notes() {
   };
 
 
-// ⭐ 5. Fetch Notes
-const fetchNotes = async () => {
-  const { data, error } = await supabase
-    .from('Notes')
-    .select('*')
-    .order('created_at', { ascending: false });
+  const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY)
+  const { data, error } = await supabase.functions.invoke('notes', {
+    body: { name: 'Functions' },
+  })
+  console.log('Function response:', data, error);
 
-  if (error) {
-    console.error(error.message);
-    return;
-  }
+/*  // ⭐ 5. Fetch Notes
+  const fetchNotes = async () => {
+    const { data, error } = await supabase
+      .from('Notes')
+      .select('*')
+      .order('created_at', { ascending: false });
 
-  setNotes(data || []);
-};
+    if (error) {
+      console.error(error.message);
+      return;
+    }
 
-useEffect(() => {
-  fetchNotes();
-  const interval = setInterval(fetchNotes, 3000);
-  return () => clearInterval(interval);
-}, [notes]);
+    setNotes(data || []);
+  };
 
+  useEffect(() => {
+    fetchNotes();
+    const interval = setInterval(fetchNotes, 3000);
+    return () => clearInterval(interval);
+  }, [notes]);
+*/
 
   // ⭐ 6. Create Note
-const addNote = async () => {
-  if (!newNote.trim()) return;
+  const addNote = async () => {
+    if (!newNote.trim()) return;
 
-  const {
-    data: { user },
-    error: userError
-  } = await supabase.auth.getUser();
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser();
 
-  if (userError || !user) {
-    showError('You must be logged in to add notes');
-    return;
-  }
+    if (userError || !user) {
+      showError('You must be logged in to add notes');
+      return;
+    }
 
-  const { data, error } = await supabase
-    .from('Notes')
-    .insert([
-      {
-        content: newNote.trim(),
-        user_id: user.id
-      }
-    ])
-    .select()
-    .single();
+    const { data, error } = await supabase
+      .from('Notes')
+      .insert([
+        {
+          content: newNote.trim(),
+          user_id: user.id
+        }
+      ])
+      .select()
+      .single();
 
-  if (error) {
-    console.error('Insert error:', error.message);
-    showError(error.message);
-    return;
-  }
+    if (error) {
+      console.error('Insert error:', error.message);
+      showError(error.message);
+      return;
+    }
 
-  setNewNote('');
-  setNotes((prev) => [data, ...prev]);
-};
+    setNewNote('');
+    setNotes((prev) => [data, ...prev]);
+  };
 
-// ⭐ 7. Update Note
-const updateNote = async (id) => {
-   if (!editingContent.trim()) return;
+  // ⭐ 7. Update Note
+  const updateNote = async (id) => {
+    if (!editingContent.trim()) return;
 
-  const { error } = await supabase
-    .from('Notes')
-    .update({ content: editingContent })
-    .eq('id', id);
+    const { error } = await supabase
+      .from('Notes')
+      .update({ content: editingContent })
+      .eq('id', id);
 
-  if (error) {
-    console.error(error.message);
-    showError(error.message);
-    return;
-  }
+    if (error) {
+      console.error(error.message);
+      showError(error.message);
+      return;
+    }
 
-  setEditingId(null);
-  setEditingContent('');
-  fetchNotes();
-};
+    setEditingId(null);
+    setEditingContent('');
+    fetchNotes();
+  };
 
-// ⭐ 8. Delete Note
-const deleteNote = async (id) => {
-  
-  const { error, data } = await supabase
-    .from('Notes')
-    .delete()
-    .eq('id', id);
+  // ⭐ 8. Delete Note
+  const deleteNote = async (id) => {
 
-  if (error) {
-    console.error(error.message);
-    showError(error.message);
-    return;
-  }
-  fetchNotes();
-  
-};
+    const { error, data } = await supabase
+      .from('Notes')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error(error.message);
+      showError(error.message);
+      return;
+    }
+    fetchNotes();
+
+  };
 
   return (
     <>
